@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>T-Rex Runner</title>
+  <style>
+    /* Add some basic styling for the game */
+    #game {
+      width: 500px;
+      height: 200px;
+      border: 1px solid black;
+      margin: 0 auto;
+      position: relative;
+    }
+    #trex {
+      width: 20px;
+      height: 50px;
+      background-color: brown;
+      position: absolute;
+      bottom: 0;
+      left: 50px;
+    }
+    #obstacle {
+      width:25px;
+      height: 35px;
+      background-color: green;
+      position: absolute;
+      bottom: 0;
+      left: 500px;
+    }
+  </style>
+</head>
+<body>
+<!-- Create the game container -->
+<div id="game">
+  <!-- Add the T-Rex character -->
+  <div id="trex"></div>
+  <!-- Add an obstacle -->
+  <div id="obstacle"></div>
+</div>
+<!-- Add a script to control the game -->
+<script>
+  // Get the game container and the T-Rex character
+  const game = document.getElementById("game");
+  const trex = document.getElementById("trex");
+  // Set the starting position of the T-Rex
+  let trexPos = 50;
+  let rect = trex.getBoundingClientRect();
+  //alert("0 rect.bottom: " + rect.bottom)
+  // Add keyboard controls for the T-Rex
+  document.addEventListener("keydown", event => {
+    if (event.code === "KeyA") {
+      // Jump the T-Rex when the up arrow key is pressed
+      trex.style.bottom = "100px";
+      //rect = trex.getBoundingClientRect();
+      //alert("1 rect.bottom: " + rect.bottom);
+      setTimeout(() => {
+        trex.style.bottom = "0";
+       // rect = trex.getBoundingClientRect();
+       // alert("2 rect.bottom: " + rect.bottom);
+      }, 500);
+     // rect = trex.getBoundingClientRect();
+     // alert("3 rect.bottom: " + rect.bottom)
+    }
+  });
+  
+  // Add an obstacle
+  const obstacle = document.getElementById("obstacle");
+  // Set the starting position of the obstacle
+  let obstaclePos = 500;
+  
+  // Create a game loop to update the game state
+  setInterval(() => {
+    // Move the obstacle to the left
+    obstaclePos -= 5;
+    obstacle.style.left = obstaclePos + "px";
+    
+    // Check if the obstacle has left the screen
+    if (obstaclePos < -25) {
+      // Reset the obstacle to the right side of the screen
+      obstaclePos = 500;
+    }
+
+    //let rect = trex.getBoundingClientRect();
+    //console.log("x: "+ rect.x);
+    //console.log("y: "+ rect.y);
+
+    //alert("rect.y: " + rect.y);
+
+    // Check for a collision between the T-Rex and the obstacle
+    rect = trex.getBoundingClientRect();
+    if ((trexPos < obstaclePos + 25 && trexPos + 20 > obstaclePos) && rect.bottom > 109) {
+      //alert("Game over!\n trexPos: " + trexPos + "\nobstaclePos: "+obstaclePos+"\nrect.bottom: " + rect.bottom);
+      alert("Game over!");
+      obstaclePos = 500;
+    }
+  }, 1000/60); // Run the game loop at 60 frames per second
+</script>
+</body>
+</html>
